@@ -1,0 +1,583 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+:root {
+  --cream: #fff7e9;
+  --pink: #f4b8c7;
+  --rose: #b9677d;
+  --brown: #60483e;
+  --green: #9ebc91;
+  --line: #8b6658;
+  --shadow: #d8b9a9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7e9dc;
+  color: var(--brown);
+  font-family: 'DotGothic16', monospace;
+}
+
+/* ボタン */
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 3px solid var(--line);
+  background: var(--cream);
+  color: var(--brown);
+  box-shadow: 3px 3px 0 var(--shadow);
+  padding: 10px 12px;
+  transition: 0.12s;
+}
+
+button:hover {
+  transform: translate(-1px,-1px);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+button:active {
+  transform: translate(2px,2px);
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ヘッダー */
+
+header {
+  max-width: 1000px;
+  margin: 20px auto 12px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: clamp(18px,4vw,27px);
+  color: #9c586e;
+  text-shadow: 2px 2px #fff;
+}
+
+.stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: #fff8ed;
+  border: 3px solid var(--line);
+  padding: 8px 12px;
+  box-shadow: 3px 3px 0 var(--shadow);
+  font-size: 13px;
+}
+
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 16px 28px;
+}
+
+/* カフェの背景 */
+
+.scene {
+  border: 4px solid var(--line);
+  box-shadow: 6px 6px 0 var(--shadow);
+  background: #f9dfe3;
+  position: relative;
+  overflow: hidden;
+}
+
+.sky {
+  height: 190px;
+  background: linear-gradient(
+    #c8e1df 0 68%,
+    #a9c5a0 68%
+  );
+  position: relative;
+}
+
+.sun {
+  position: absolute;
+  right: 12%;
+  top: 22px;
+  width: 42px;
+  height: 42px;
+  background: #ffe49a;
+  border: 4px solid #9b7960;
+  box-shadow: 4px 4px 0 #d5b59d;
+}
+
+.cloud {
+  position: absolute;
+  left: 13%;
+  top: 38px;
+  color: #fff;
+  font-size: 27px;
+  text-shadow: 3px 3px #a6c3bd;
+}
+
+.sign {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff4e8;
+  border: 4px solid var(--line);
+  padding: 8px 16px;
+  color: #a85d72;
+  box-shadow: 4px 4px 0 #c89e91;
+  white-space: nowrap;
+}
+
+.shop {
+  height: 210px;
+  background: #e8bcae;
+  position: relative;
+  border-top: 5px solid var(--line);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.shop:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: repeating-linear-gradient(
+    90deg,
+    #f7d6c7 0 45px,
+    #d98f9a 45px 90px
+  );
+  border-bottom: 4px solid var(--line);
+}
+
+.counter {
+  width: min(78%,580px);
+  height: 105px;
+  background: #b87965;
+  border: 5px solid var(--line);
+  position: relative;
+  margin-bottom: 0;
+  box-shadow: inset 0 12px #d99c83;
+}
+
+.counter:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  height: 8px;
+  background: #8f5e52;
+}
+
+.machine {
+  position: absolute;
+  bottom: 100px;
+  left: 18%;
+  width: 75px;
+  height: 75px;
+  background: #f4e8d6;
+  border: 4px solid var(--line);
+  box-shadow: 4px 4px 0 #a77a6a;
+}
+
+.machine:before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 42px;
+  height: 18px;
+  background: #d58e9d;
+  border: 3px solid var(--line);
+}
+
+.machine:after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 25px;
+  width: 15px;
+  height: 18px;
+  background: #8d6559;
+}
+
+.plant {
+  position: absolute;
+  bottom: 100px;
+  right: 17%;
+  font-size: 42px;
+  filter: drop-shadow(3px 3px #a77a6a);
+}
+
+.customer {
+  position: absolute;
+  bottom: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 58px;
+  filter: drop-shadow(3px 3px #9a6b5d);
+  animation: bob 1.4s steps(2) infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translate(-50%,-5px);
+  }
+}
+
+.floor {
+  height: 28px;
+  background: repeating-linear-gradient(
+    90deg,
+    #d9a58e 0 40px,
+    #c88f7d 40px 80px
+  );
+  border-top: 4px solid var(--line);
+}
+
+/* ゲーム画面 */
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.panel {
+  background: #fff8ed;
+  border: 4px solid var(--line);
+  box-shadow: 5px 5px 0 var(--shadow);
+  padding: 15px;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+  color: #a45e72;
+}
+
+.order {
+  background: #fbe7e9;
+  border: 3px dashed #c27d8e;
+  padding: 12px;
+  margin-bottom: 12px;
+  min-height: 75px;
+  line-height: 1.8;
+}
+
+/* 材料ボタン */
+
+.ingredients {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+}
+
+.ingredient {
+  font-size: 12px;
+  padding: 9px 4px;
+}
+
+.ingredient.selected {
+  background: #f4c6d1;
+  outline: 3px solid #b9677d;
+}
+
+/* 操作ボタン */
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.message {
+  min-height: 25px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9c586e;
+}
+
+/* お店の育成 */
+
+.shop-items {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+}
+
+.item {
+  padding: 10px 6px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.item span {
+  font-size: 24px;
+  display: block;
+}
+
+.item.owned {
+  background: #e4efdc;
+}
+
+/* 育成ゲージ */
+
+.progress {
+  height: 13px;
+  background: #ead5c9;
+  border: 2px solid var(--line);
+  margin-top: 7px;
+}
+
+.progress > div {
+  height: 100%;
+  background: #a8c79b;
+  width: 0;
+  transition: width 0.3s;
+}
+
+.footer-note {
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 14px 2px 0;
+  color: #856b60;
+}
+
+/* スマホ対応 */
+
+@media(max-width:700px) {
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sky {
+    height: 160px;
+  }
+
+  .shop {
+    height: 190px;
+  }
+
+  .customer {
+    font-size: 48px;
+  }
+
+  .machine {
+    left: 10%;
+  }
+
+  .plant {
+    right: 10%;
+  }
+
+  .sign {
+    font-size: 12px;
+  }
+
+}
+
+
+/* 材料ボタン */
+.ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ingredient {
+  padding: 12px 18px;
+  border: 2px solid #e8cbd3;
+  border-radius: 14px;
+  background: #fffaf8;
+  color: #805b64;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.ingredient:hover {
+  transform: translateY(-3px);
+  background: #fcecf1;
+}
+
+.ingredient.selected {
+  background: #e8c2cf;
+  border-color: #c58a9b;
+}
+
+.ingredient:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ショップ */
+.shop-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.shop-items button {
+  padding: 15px 8px;
+  border: 2px solid #e8cbd3;
+  border-radius: 15px;
+  background: #fffaf8;
+  color: #805b64;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.shop-items button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px #d9bdc5;
+}
+
+.shop-items button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.shop-items button.owned {
+  background: #f5e8e8;
+  border-color: #c58a9b;
+}
+
+/* 購入したアイテム */
+#sceneDecorations {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 28px;
+}
+
+#customer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 130px;
+}
+
+#customer svg {
+  width: 120px;
+  height: 120px;
+  image-rendering: pixelated;
+  animation: customerPop 0.4s ease;
+}
+
+@keyframes customerPop {
+  0% {
+    transform: scale(0.7);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* お客さんの画像 */
+#customer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 155px;
+  padding: 10px;
+}
+
+#customer img {
+  width: 145px;
+  height: 145px;
+  object-fit: contain;
+  border-radius: 20px;
+  filter: drop-shadow(0 5px 5px rgba(100, 70, 70, 0.12));
+  animation: customerAppear 0.5s ease;
+}
+
+#customer img.customer-happy {
+  animation: customerHappy 0.5s ease;
+}
+
+@keyframes customerAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes customerHappy {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+
+/* カウントダウンタイマー */
+
+.timer {
+  background: #fff1d9;
+  border: 3px solid var(--line);
+  box-shadow: 3px 3px 0 var(--shadow);
+  padding: 10px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+#timer {
+  display: inline-block;
+  min-width: 35px;
+  color: #b9677d;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.timer.warning {
+  background: #f7cbd0;
+  color: #a33f54;
+  animation: timerBlink .6s infinite alternate;
+}
+
+@keyframes timerBlink {
+  from { opacity: 1; }
+  to { opacity: .6; }
+}
