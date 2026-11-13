@@ -1,365 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="ja">
-<head link rel="stylesheet" href="style.css">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mellow Café</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
-
-:root {
-  --cream: #fff7e9;
-  --pink: #f4b8c7;
-  --rose: #b9677d;
-  --brown: #60483e;
-  --green: #9ebc91;
-  --line: #8b6658;
-  --shadow: #d8b9a9;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #f7e9dc;
-  color: var(--brown);
-  font-family: 'DotGothic16', monospace;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-  border: 3px solid var(--line);
-  background: var(--cream);
-  color: var(--brown);
-  box-shadow: 3px 3px 0 var(--shadow);
-  padding: 10px 12px;
-  transition: 0.12s;
-}
-
-button:hover {
-  transform: translate(-1px,-1px);
-  box-shadow: 4px 4px 0 var(--shadow);
-}
-
-button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-header {
-  max-width: 1000px;
-  margin: 20px auto 12px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.logo {
-  font-size: 25px;
-  color: #9c586e;
-}
-
-.stats {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.stat {
-  background: #fff8ed;
-  border: 3px solid var(--line);
-  padding: 8px 12px;
-  box-shadow: 3px 3px 0 var(--shadow);
-  font-size: 13px;
-}
-
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 0 16px 28px;
-}
-
-/* カフェの背景 */
-
-.scene {
-  border: 4px solid var(--line);
-  box-shadow: 6px 6px 0 var(--shadow);
-  background: #f9dfe3;
-  position: relative;
-  overflow: hidden;
-}
-
-.sky {
-  height: 190px;
-  background: linear-gradient(#c8e1df 0 68%, #a9c5a0 68%);
-  position: relative;
-}
-
-.sun {
-  position: absolute;
-  right: 12%;
-  top: 22px;
-  width: 42px;
-  height: 42px;
-  background: #ffe49a;
-  border: 4px solid #9b7960;
-  box-shadow: 4px 4px 0 #d5b59d;
-}
-
-.cloud {
-  position: absolute;
-  left: 13%;
-  top: 38px;
-  color: white;
-  font-size: 27px;
-}
-
-.sign {
-  position: absolute;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff4e8;
-  border: 4px solid var(--line);
-  padding: 8px 16px;
-  color: #a85d72;
-  box-shadow: 4px 4px 0 #c89e91;
-  white-space: nowrap;
-}
-
-.shop {
-  height: 210px;
-  background: #e8bcae;
-  position: relative;
-  border-top: 5px solid var(--line);
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.shop:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 28px;
-  background: repeating-linear-gradient(
-    90deg,
-    #f7d6c7 0 45px,
-    #d98f9a 45px 90px
-  );
-  border-bottom: 4px solid var(--line);
-}
-
-.counter {
-  width: 78%;
-  height: 105px;
-  background: #b87965;
-  border: 5px solid var(--line);
-  position: relative;
-  box-shadow: inset 0 12px #d99c83;
-}
-
-.machine {
-  position: absolute;
-  bottom: 100px;
-  left: 18%;
-  width: 75px;
-  height: 75px;
-  background: #f4e8d6;
-  border: 4px solid var(--line);
-  box-shadow: 4px 4px 0 #a77a6a;
-}
-
-.machine:before {
-  content: "";
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  width: 42px;
-  height: 18px;
-  background: #d58e9d;
-  border: 3px solid var(--line);
-}
-
-.machine:after {
-  content: "";
-  position: absolute;
-  bottom: 8px;
-  left: 25px;
-  width: 15px;
-  height: 18px;
-  background: #8d6559;
-}
-
-.plant {
-  position: absolute;
-  bottom: 100px;
-  right: 17%;
-  font-size: 42px;
-}
-
-.customer {
-  position: absolute;
-  bottom: 95px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 58px;
-  animation: bob 1.4s steps(2) infinite;
-}
-
-@keyframes bob {
-  50% {
-    transform: translate(-50%,-5px);
-  }
-}
-
-.floor {
-  height: 28px;
-  background: repeating-linear-gradient(
-    90deg,
-    #d9a58e 0 40px,
-    #c88f7d 40px 80px
-  );
-  border-top: 4px solid var(--line);
-}
-
-/* ゲーム画面 */
-
-.layout {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.panel {
-  background: #fff8ed;
-  border: 4px solid var(--line);
-  box-shadow: 5px 5px 0 var(--shadow);
-  padding: 15px;
-}
-
-h2 {
-  font-size: 16px;
-  margin: 0 0 12px;
-  color: #a45e72;
-}
-
-.order {
-  background: #fbe7e9;
-  border: 3px dashed #c27d8e;
-  padding: 12px;
-  margin-bottom: 12px;
-  min-height: 75px;
-  line-height: 1.8;
-}
-
-.ingredients {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 8px;
-}
-
-.ingredient {
-  font-size: 12px;
-  padding: 9px 4px;
-}
-
-.ingredient.selected {
-  background: #f4c6d1;
-  outline: 3px solid #b9677d;
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.actions button {
-  flex: 1;
-}
-
-.message {
-  min-height: 25px;
-  margin-top: 10px;
-  font-size: 12px;
-  color: #9c586e;
-}
-
-/* お店の育成 */
-
-.shop-items {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 8px;
-}
-
-.item {
-  padding: 10px 6px;
-  font-size: 12px;
-  text-align: center;
-  line-height: 1.8;
-}
-
-.item span {
-  font-size: 24px;
-  display: block;
-}
-
-.item.owned {
-  background: #e4efdc;
-}
-
-.progress {
-  height: 13px;
-  background: #ead5c9;
-  border: 2px solid var(--line);
-  margin-top: 7px;
-}
-
-.progress > div {
-  height: 100%;
-  background: #a8c79b;
-  width: 0;
-  transition: width 0.3s;
-}
-
-.footer-note {
-  font-size: 11px;
-  line-height: 1.8;
-  margin-top: 14px;
-  color: #856b60;
-}
-
-@media(max-width:700px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sky {
-    height: 160px;
-  }
-
-  .shop {
-    height: 190px;
-  }
-
-  .customer {
-    font-size: 48px;
-  }
-}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mellow Café</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -369,7 +14,7 @@ h2 {
 
   <div class="stats">
     <div class="stat">
-      🪙 COIN <b id="coins">30</b>
+      🪙 <span id="pointLabel">POINT</span> <b id="coins">0</b>
     </div>
 
     <div class="stat">
@@ -379,148 +24,72 @@ h2 {
     <div class="stat">
       ♡ HAPPINESS <b id="happy">0</b>
     </div>
+
+    <button id="homeBtn" class="stat-btn">🏠 HOME</button>
   </div>
 </header>
 
 <main>
 
   <!-- カフェの風景 -->
-
   <section class="scene">
-
     <div class="sky">
       <div class="cloud">☁</div>
       <div class="sun"></div>
-
-      <div class="sign">
-        ✿Mellow café ✿
-      </div>
+      <div class="sign">✿ Mellow café ✿</div>
     </div>
 
     <div class="shop">
-
       <div class="machine"></div>
-
-      <div class="plant" id="scenePlant">
-        🪴
-      </div>
-
+      <div class="plant" id="scenePlant">🪴</div>
       <div class="customer" id="customer">
-        🐻
+        <img src="bear.png" alt="bear" class="customer-image" onerror="this.parentElement.textContent='🐻'">
       </div>
 
-      <div class="counter"></div>
-
+    <div class="counter">
+        <!-- 購入したアイテムがレジ台の上に並びます -->
+        <div id="sceneDecorations"></div>
+      </div>
     </div>
 
     <div class="floor"></div>
-
   </section>
-
-
   <!-- 注文ゲーム -->
-
   <div class="layout">
 
     <section class="panel">
-
       <h2>♡ TODAY'S ORDER</h2>
 
       <div class="timer">
-         ⏰ TIME LIMIT
-         <span id="timer">10</span> 秒
+        ⏰ TIME LIMIT <span id="timer">10</span> 秒
       </div>
-
-      <div class="order" id="orderText"></div>
 
       <div class="order" id="orderText">
-        いらっしゃいませ！
-        今日もすてきな一杯をつくろう。
+        いらっしゃいませ！今日もすてきな一杯をつくろう。
       </div>
 
-      <div di="ingredients" class="ingredients"></div>
-
-        <button class="ingredient" data-value="coffee">
-          ☕<br>コーヒー
-        </button>
-
-        <button class="ingredient" data-value="milk">
-          🥛<br>ミルク
-        </button>
-
-        <button class="ingredient" data-value="strawberry">
-          🍓<br>いちご
-        </button>
-
-        <button class="ingredient" data-value="matcha">
-          🍵<br>抹茶
-        </button>
-
-        <button class="ingredient" data-value="chocolate">
-          🍫<br>チョコ
-        </button>
-
-        <button class="ingredient" data-value="ice">
-          🧊<br>氷
-        </button>
-
-      </div>
+      <div id="ingredients" class="ingredients"></div>
 
       <div class="actions">
-        <button id="serve">
-          できあがり！ ✧
-        </button>
-
-        <button id="clear">
-          やりなおす
-        </button>
+        <button id="serve">できあがり！ ✧</button>
+        <button id="clear">やりなおす</button>
       </div>
 
       <div class="message" id="message">
         注文に合わせて材料を選んでね。
       </div>
-
     </section>
 
-
     <!-- お店を育てる -->
-
     <section class="panel">
-
       <h2>✿ CAFÉ GARDEN</h2>
 
       <p style="font-size:12px;line-height:1.8">
-        接客でコインを集めて、
+        接客でポイントを集めて、<br>
         お店にアイテムを飾ろう！
       </p>
 
-      <div id="shopItem" class="shop-items">
-
-        <button class="item"
-          data-item="flower" data-cost="15">
-          <span>🌷</span>
-          お花<br>15 coin
-        </button>
-
-        <button class="item"
-          data-item="lamp" data-cost="25">
-          <span>🏮</span>
-          ランプ<br>25 coin
-        </button>
-
-        <button class="item"
-          data-item="cat" data-cost="35">
-          <span>🐈</span>
-          ねこ店員<br>35 coin
-        </button>
-
-        <button class="item"
-          data-item="cake" data-cost="45">
-          <span>🍰</span>
-          ケーキ棚<br>45 coin
-        </button>
-
-      </div>
+      <div id="shopItems" class="shop-items"></div>
 
       <div style="font-size:12px;margin-top:15px">
         お店のにぎわい
@@ -530,334 +99,53 @@ h2 {
         <div id="progressBar"></div>
       </div>
 
-      <p id="growthText"
-        style="font-size:11px">
+      <p id="growthText" style="font-size:11px">
         アイテムを集めてカフェを育てよう。
       </p>
-
     </section>
 
   </div>
 
   <p class="footer-note">
-    HOW TO PLAY：注文のドリンクに必要な材料を選んで
-    「できあがり！」。正解するとコインとハッピーが増えるよ。
-    集めたコインでお店をデコレーションしよう。
+    HOW TO PLAY：注文のドリンクに必要な材料を選んで「できあがり！」。<br>
+    正解するとポイントとハッピーが増えるよ。集めたポイントでお店をデコレーションしよう。
   </p>
 
 </main>
 
+<!-- 最初のホーム画面（難易度選択） -->
+<div id="homeScreen" class="home-screen">
+  <div class="home-card">
+    <div class="home-badge">✿ WELCOME TO ✿</div>
+    <h1 class="home-title">Mellow CAFÉ</h1>
+    <p class="home-desc">
+      お客さんの注文に合わせてドリンクを作ろう！<br>
+      難易度を選んでお店をオープンしてね。
+    </p>
+
+    <div class="difficulty-list">
+      <button class="diff-btn" data-diff="easy">
+        🌱 <b>EASY（のんびり）</b><br>
+        <span>制限時間 15秒 ／ レシピのヒントあり（+1 PT）</span>
+      </button>
+
+      <button class="diff-btn active" data-diff="normal">
+        ☕ <b>NORMAL（ふつう）</b><br>
+        <span>制限時間 10秒 ／ ヒントなしの基本モード（+2 PT）</span>
+      </button>
+
+      <button class="diff-btn" data-diff="hard">
+        🔥 <b>HARD（いそがしい）</b><br>
+        <span>制限時間 8秒 ／ 材料3〜4個の特別注文のみ（+3 PT）</span>
+      </button>
+    </div>
+
+    <button id="startBtn" class="start-btn">
+      ✧ OPEN CAFÉ（スタート） ✧
+    </button>
+  </div>
+</div>
 
-<script>
-
-// ドリンクのレシピ
-
-const recipes = [
-
-  {
-    name: "カフェラテ",
-    emoji: "🐻",
-    needs: ["coffee","milk"],
-    jp: "コーヒー＋ミルク"
-  },
-
-  {
-    name: "ストロベリーミルク",
-    emoji: "🐰",
-    needs: ["strawberry","milk"],
-    jp: "いちご＋ミルク"
-  },
-
-  {
-    name: "抹茶ラテ",
-    emoji: "🐸",
-    needs: ["matcha","milk"],
-    jp: "抹茶＋ミルク"
-  },
-
-  {
-    name: "チョコアイス",
-    emoji: "🐱",
-    needs: ["chocolate","ice"],
-    jp: "チョコ＋氷"
-  },
-
-  {
-    name: "アイスコーヒー",
-    emoji: "🐼",
-    needs: ["coffee","ice"],
-    jp: "コーヒー＋氷"
-  }
-
-];
-
-
-// 購入アイテム
-
-const itemData = {
-
-  flower: {
-    emoji: "🌷",
-    name: "お花"
-  },
-
-  lamp: {
-    emoji: "🏮",
-    name: "ランプ"
-  },
-
-  cat: {
-    emoji: "🐈",
-    name: "ねこ店員"
-  },
-
-  cake: {
-    emoji: "🍰",
-    name: "ケーキ棚"
-  }
-
-};
-
-
-// ゲームデータ
-
-let state = JSON.parse(
-  localStorage.getItem("littlePixelCafe") || "null"
-) || {
-
-  coins: 30,
-  day: 1,
-  happy: 0,
-  served: 0,
-  owned: []
-
-};
-
-let selected = [];
-let current = null;
-
-const $ = id => document.getElementById(id);
-
-
-// セーブ機能
-
-function save() {
-
-  localStorage.setItem(
-    "littlePixelCafe",
-    JSON.stringify(state)
-  );
-
-}
-
-
-// 画面更新
-
-function update() {
-
-  $("coins").textContent = state.coins;
-  $("day").textContent = state.day;
-  $("happy").textContent = state.happy;
-
-  $("progressBar").style.width =
-    (state.owned.length / 4 * 100) + "%";
-
-  $("growthText").textContent =
-    state.owned.length === 4
-    ? "すてき！理想のカフェが完成したよ ✿"
-    : `デコレーション ${state.owned.length}/4 個`;
-
-  $("scenePlant").textContent =
-    state.owned.includes("flower") ? "🌷" : "🪴";
-
-  document.querySelectorAll("#shopItems button")
-    .forEach(btn => {
-
-      const key = btn.dataset.item;
-
-      const owned = state.owned.includes(key);
-
-      btn.classList.toggle("owned", owned);
-
-      btn.disabled =
-        owned || state.coins < Number(btn.dataset.cost);
-
-      btn.innerHTML = `
-        <span>${itemData[key].emoji}</span>
-        ${itemData[key].name}<br>
-        ${owned ? "飾りつけ済み" : btn.dataset.cost + " coin"}
-      `;
-
-    });
-
-  save();
-
-}
-
-
-// 新しい注文
-
-function newOrder() {
-
-  current = recipes[
-    Math.floor(Math.random() * recipes.length)
-  ];
-
-  selected = [];
-
-  document.querySelectorAll(".ingredient")
-    .forEach(btn => btn.classList.remove("selected"));
-
-  $("customer").textContent = current.emoji;
-
-  $("orderText").innerHTML = `
-    「${current.name}をひとつお願いします！」<br>
-  `;
-
-  $("message").textContent =
-    "材料を選んでドリンクを作ろう！";
-
-}
-
-
-// 材料選択
-
-document.querySelectorAll(".ingredient")
-  .forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-      const value = btn.dataset.value;
-
-      if (selected.includes(value)) {
-
-        selected = selected.filter(x => x !== value);
-
-        btn.classList.remove("selected");
-
-      } else {
-
-        selected.push(value);
-
-        btn.classList.add("selected");
-
-      }
-
-    });
-
-  });
-
-
-// やりなおしボタン
-
-$("clear").addEventListener("click", () => {
-
-  selected = [];
-
-  document.querySelectorAll(".ingredient")
-    .forEach(btn => btn.classList.remove("selected"));
-
-  $("message").textContent =
-    "材料を選びなおしてね。";
-
-});
-
-
-// ドリンク完成
-
-$("serve").addEventListener("click", () => {
-
-  if (!current) {
-    newOrder();
-    return;
-  }
-
-  const correct =
-    selected.length === current.needs.length &&
-    current.needs.every(x => selected.includes(x));
-
-  if (correct) {
-
-    state.coins += 10;
-    state.happy += 1;
-    state.served += 1;
-
-    $("message").textContent =
-      "大正解！おいしい〜！ +10 coin ♡";
-
-    $("orderText").innerHTML = `
-      ✨ ${current.name} が完成！<br>
-      お客さんが笑顔になったよ。
-    `;
-
-    $("customer").textContent = "🥰";
-
-    update();
-
-    if (state.served % 5 === 0) {
-
-      state.day += 1;
-
-      $("day").textContent = state.day;
-
-      $("message").textContent +=
-        " 新しい一日が始まったよ！";
-
-    }
-
-    current = null;
-
-  } else {
-
-    $("message").textContent =
-      "あれれ？注文と材料がちがうみたい。もう一度！";
-
-  }
-
-});
-
-
-// アイテム購入
-
-$("shopItems").querySelectorAll("button")
-  .forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-      const key = btn.dataset.item;
-
-      const cost = Number(btn.dataset.cost);
-
-      if (
-        state.owned.includes(key) ||
-        state.coins < cost
-      ) {
-        return;
-      }
-
-      state.coins -= cost;
-
-      state.owned.push(key);
-
-      $("message").textContent =
-        `${itemData[key].name}を飾ったよ！お店がかわいくなったね ✿`;
-
-      update();
-
-    });
-
-  });
-
-
-// ゲーム開始
-
-update();
-newOrder();
-
-</script>
 <script src="script.js"></script>
 </body>
 </html>
- 
-<div id="sceneDecorations"></div>
-<script src="script.js"></script>
