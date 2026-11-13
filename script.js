@@ -170,10 +170,10 @@ const difficultySettings = {
   },
   hard: {
     label: "HARD",
-    time: 8, // 材料3〜4個を押しやすいよう8秒に設定（もっと難しくするなら6に変更）
+    time: 8,
     hint: false,
     reward: 3,
-    minNeeds: 3, // 必ず3個以上の特別注文が出る
+    minNeeds: 3,
     maxNeeds: 4
   }
 };
@@ -251,7 +251,8 @@ if (
     day: 1,
     happy: 0,
     served: 0,
-    owned: []
+    owned: [],
+    equipped: []
   };
 }
 
@@ -267,6 +268,10 @@ if (state.coins !== undefined) {
 state.day = state.day || 1;
 state.happy = state.happy || 0;
 state.served = state.served || 0;
+
+if (!Array.isArray(state.equipped)) {
+  state.equipped = [...state.owned];
+}
 
 let selected = [];
 let current = null;
@@ -292,7 +297,7 @@ function updateTimer() {
 function startCountdown() {
   clearInterval(countdownInterval);
 
-  const config = difficultySettings[currentDifficulty];
+  const config = difficultySettings[currentDifficulty] || difficultySettings.normal;
   timeLeft = config.time;
   updateTimer();
 
@@ -311,20 +316,26 @@ function startCountdown() {
 function timeUp() {
   current = null;
 
-  $("message").textContent =
-    "時間切れ！次のお客さんを迎えよう！";
+  if ($("message")) {
+    $("message").textContent = "時間切れ！次のお客さんを迎えよう！";
+  }
 
-  $("orderText").textContent =
-    "ドリンクが間に合わなかったみたい...";
+  if ($("orderText")) {
+    $("orderText").textContent = "ドリンクが間に合わなかったみたい...";
+  }
 
   document.querySelectorAll(".ingredient").forEach(btn => {
     btn.disabled = true;
   });
 
-  $("serve").disabled = true;
+  if ($("serve")) {
+    $("serve").disabled = true;
+  }
 
   setTimeout(() => {
-    $("serve").disabled = false;
+    if ($("serve")) {
+      $("serve").disabled = false;
+    }
     newOrder();
   }, 1500);
 }
@@ -430,27 +441,32 @@ function createShop() {
 // ===================================
 
 function update() {
-  $("coins").textContent = state.points;
-  $("day").textContent = state.day;
-  $("happy").textContent = state.happy;
+  if ($("coins")) $("coins").textContent = state.points;
+  if ($("day")) $("day").textContent = state.day;
+  if ($("happy")) $("happy").textContent = state.happy;
 
   const pointLabel = $("pointLabel");
   if (pointLabel) {
     pointLabel.textContent = "POINT";
   }
 
-  $("progressBar").style.width =
-    (state.owned.length / 4 * 100) + "%";
+  // 飾っている数に応じてゲージを更新
+  if ($("progressBar")) {
+    $("progressBar").style.width =
+      (state.equipped.length / 4 * 100) + "%";
+  }
 
-  $("growthText").textContent =
-    state.owned.length === 4
-      ? "Mellow Caféが完成したよ！♡"
-      : `デコレーション ${state.owned.length}/4 個`;
+  if ($("growthText")) {
+    $("growthText").textContent =
+      state.equipped.length === 4
+        ? "Mellow Caféが完成したよ！♡"
+        : `飾りつけ中 ${state.equipped.length}/4 個`;
+  }
 
-  // お花の表示（画像がない場合は絵文字に自動切り替え）
+  // お花の表示（飾っているときはお花画像、外すと植木鉢に戻る）
   const scenePlant = $("scenePlant");
   if (scenePlant) {
-    if (state.owned.includes("flower")) {
+    if (state.equipped.includes("flower")) {
       scenePlant.innerHTML = "";
       const plantImg = document.createElement("img");
       plantImg.src = "item_flower.png";
@@ -465,7 +481,7 @@ function update() {
     }
   }
 
-  // ショップの購入状態（画像がない場合は絵文字に自動切り替え）
+  // ショップボタンの状態更新（購入済みならクリックで着脱可能）
   Object.entries(itemData).forEach(([key, item]) => {
     const button = document.querySelector(
       `#shopItems button[data-item="${key}"]`
@@ -474,9 +490,11 @@ function update() {
     if (!button) return;
 
     const owned = state.owned.includes(key);
+    const equipped = state.equipped.includes(key);
 
-    button.classList.toggle("owned", owned);
-    button.disabled = owned || state.points < item.cost;
+    button.classList.toggle("owned", owned && equipped);
+    button.classList.toggle("stored", owned && !equipped);
+    button.disabled = !owned && state.points < item.cost;
 
     button.innerHTML = "";
 
@@ -490,19 +508,25 @@ function update() {
       icon.replaceWith(span);
     };
 
+    let statusText = `${item.cost} POINT`;
+    if (owned && equipped) {
+      statusText = "飾り中（外す）";
+    } else if (owned && !equipped) {
+      statusText = "外し中（飾る）";
+    }
+
     button.appendChild(icon);
     button.appendChild(document.createTextNode(item.name));
     button.appendChild(document.createElement("br"));
-    button.appendChild(
-      document.createTextNode(owned ? "飾りつけ済み" : `${item.cost} POINT`)
-    );
+    button.appendChild(document.createTextNode(statusText));
   });
-// お店の飾り付けを表示（レジ台の上に配置）
+
+  // レジ台の上には「飾り中」のアイテムだけを表示
   const decorations = $("sceneDecorations");
   if (decorations) {
     decorations.innerHTML = "";
 
-    state.owned.forEach(key => {
+    state.equipped.forEach(key => {
       const item = itemData[key];
       if (item) {
         const decoration = document.createElement("img");
@@ -530,11 +554,17 @@ function update() {
 // ===================================
 
 function newOrder() {
-  const config = difficultySettings[currentDifficulty];
+  const config = difficultySettings[currentDifficulty] || difficultySettings.normal;
+  const minNeeds = config.minNeeds || 2;
+  const maxNeeds = config.maxNeeds || 2;
 
-  const availableRecipes = recipes.filter(
-    r => r.needs.length <= config.maxNeeds
+  let availableRecipes = recipes.filter(
+    r => r.needs.length >= minNeeds && r.needs.length <= maxNeeds
   );
+
+  if (availableRecipes.length === 0) {
+    availableRecipes = recipes;
+  }
 
   current = availableRecipes[
     Math.floor(Math.random() * availableRecipes.length)
@@ -550,20 +580,26 @@ function newOrder() {
 
   showCustomer(false);
 
-  if (config.hint) {
-    $("orderText").innerHTML = `
-      「<b>${current.name}</b>をひとつお願いします！」<br>
-      <span style="font-size:12px;color:#9c586e;">💡 ヒント：${current.jp}</span>
-    `;
-  } else {
-    $("orderText").innerHTML = `「<b>${current.name}</b>をひとつお願いします！」`;
+  if ($("orderText")) {
+    if (config.hint) {
+      $("orderText").innerHTML = `
+        「<b>${current.name}</b>をひとつお願いします！」<br>
+        <span style="font-size:12px;color:#9c586e;">💡 ヒント：${current.jp}</span>
+      `;
+    } else {
+      $("orderText").innerHTML = `「<b>${current.name}</b>をひとつお願いします！」`;
+    }
   }
 
-  $("message").textContent =
-    "材料を選んでドリンクを作ろう！";
+  if ($("message")) {
+    $("message").textContent = "材料を選んでドリンクを作ろう！";
+  }
 
-  $("serve").textContent = "できあがり！ ✧";
-  $("serve").disabled = false;
+  if ($("serve")) {
+    $("serve").textContent = "できあがり！ ✧";
+    $("serve").disabled = false;
+  }
+
   startCountdown();
 }
 
@@ -581,8 +617,9 @@ if ($("clear")) {
       btn.classList.remove("selected");
     });
 
-    $("message").textContent =
-      "材料を選びなおしてね。";
+    if ($("message")) {
+      $("message").textContent = "材料を選びなおしてね。";
+    }
   });
 }
 
@@ -606,7 +643,8 @@ if ($("serve")) {
     if (correct) {
       clearInterval(countdownInterval);
 
-      const reward = difficultySettings[currentDifficulty].reward;
+      const config = difficultySettings[currentDifficulty] || difficultySettings.normal;
+      const reward = config.reward;
 
       state.points += reward;
       state.happy += 1;
@@ -614,11 +652,15 @@ if ($("serve")) {
 
       finished = true;
 
-      $("message").textContent =
-        `大正解！おいしい〜！ +${reward} POINT ♡`;
+      if ($("message")) {
+        $("message").textContent =
+          `大正解！おいしい〜！ +${reward} POINT ♡`;
+      }
 
-      $("orderText").textContent =
-        `${current.name} が完成！お客さんが笑顔になったよ。`;
+      if ($("orderText")) {
+        $("orderText").textContent =
+          `${current.name} が完成！お客さんが笑顔になったよ。`;
+      }
 
       showCustomer(true);
 
@@ -630,38 +672,59 @@ if ($("serve")) {
 
       if (state.served % 5 === 0) {
         state.day += 1;
-        $("message").textContent +=
-          " 新しい一日が始まったよ！";
+        if ($("message")) {
+          $("message").textContent += " 新しい一日が始まったよ！";
+        }
       }
 
       update();
     } else {
-      $("message").textContent =
-        "あれれ？材料がちがうみたい。もう一度！";
+      if ($("message")) {
+        $("message").textContent =
+          "あれれ？材料がちがうみたい。もう一度！";
+      }
     }
   });
 }
 
 // ===================================
-// アイテム購入
+// アイテム購入・取り外し切り替え
 // ===================================
 
 function buyItem(key) {
   const item = itemData[key];
   if (!item) return;
 
-  if (
-    state.owned.includes(key) ||
-    state.points < item.cost
-  ) {
+  // すでに購入済みの場合は「取り外す / 飾る」を切り替え
+  if (state.owned.includes(key)) {
+    if (state.equipped.includes(key)) {
+      state.equipped = state.equipped.filter(x => x !== key);
+      if ($("message")) {
+        $("message").textContent = `${item.name}を取り外したよ。`;
+      }
+    } else {
+      state.equipped.push(key);
+      if ($("message")) {
+        $("message").textContent = `${item.name}をまた飾ったよ！ ✿`;
+      }
+    }
+    update();
+    return;
+  }
+
+  // 未購入の場合はポイントで購入して飾る
+  if (state.points < item.cost) {
     return;
   }
 
   state.points -= item.cost;
   state.owned.push(key);
+  state.equipped.push(key);
 
-  $("message").textContent =
-    `${item.name}を飾ったよ！お店がかわいくなったね ✿`;
+  if ($("message")) {
+    $("message").textContent =
+      `${item.name}を購入して飾ったよ！お店がかわいくなったね ✿`;
+  }
 
   update();
 }
